@@ -74,7 +74,15 @@ class Detect(nn.Module):
                 z.append(y.view(bs, -1, self.no))
 
         return x if self.training else (torch.cat(z, 1),) if self.export else (torch.cat(z, 1), x)
+    
+    def forward_export(self, x):
+        z = []  # inference output
+        for i in range(self.nl):
+            x[i] = self.m[i](x[i])  # conv
+            x[i] = x[i].sigmoid() 
 
+        return x 
+    
     def _make_grid(self, nx=20, ny=20, i=0):
         d = self.anchors[i].device
         shape = 1, self.na, ny, nx, 2  # grid shape
