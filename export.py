@@ -483,6 +483,7 @@ def run(
         if isinstance(m, Detect):
             m.inplace = inplace
             m.onnx_dynamic = dynamic
+            m.forward = m.forward_export
             m.export = True
 
     for _ in range(2):
